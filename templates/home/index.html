@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+
+<html lang="ru">
+    <head>
+
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        
+        <title>Home Page Volus</title>
+        
+        <link href="https://fonts.googleapis.com/css?family=Raleway:100,300,400,500,700,900" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap.min.css') }}">
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/font-awesome.css') }}">
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/templatemo-softy-pinko.css') }}">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@700&display=swap" rel="stylesheet">
+
+        <style>
+            .alert {
+                padding: 20px;
+                background-color: #69CFFF;
+                color: white;
+              }
+              
+              .closebtn {
+                margin-left: 15px;
+                color: white;
+                font-weight: bold;
+                float: right;
+                font-size: 22px;
+                line-height: 20px;
+                cursor: pointer;
+                transition: 0.3s;
+              }
+              
+              .closebtn:hover {
+                color: black;
+              }
+        </style>
+
+    </head>
+    
+    <body>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        {% for category, message in messages %}
+            <!-- <div align="center" class="alert alert-{{ category }} alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <strong >{{ message }}</strong> 
+            </div> -->
+            <div class="alert">
+            <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
+            <strong>Внимание: </strong>{{ message }}
+            </div>
+            
+        {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+
+    <div id="preloader">
+        <div class="jumper">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>  
+    
+    
+    <header class="header-area header-sticky">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <nav class="main-nav">
+                        <a href="{{ url_for('home') }}" class="logo">
+                            <img src="{{ url_for('static', filename='images/my_logo.png') }}" alt="Volus"/>
+                        </a>
+                        <ul class="nav">
+                            <li><a href="{{ url_for('home') }}" class="active">Главная</a></li>
+                            <li><a href="#features">О нас</a></li>
+                            <!-- <li><a href="#work-process">Организации</a></li> -->
+                            <li><a href="#testimonials">Отзывы</a></li>
+                            <li><a {% if 'vol' in session or 'org' in session %} href="{{ url_for('volunteer.index') }}" {% else %} href="#for-volunteers" {% endif %}>Волонтерам</a></li>
+                            <li><a href="#contact-us">Контакты</a></li>
+                            <li><a href="{{ url_for('volunteer.login') }}">Войти</a></li>
+                        </ul>
+                        <a class='menu-trigger'>
+                            <span>Меню</span>
+                        </a>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="welcome-area" id="welcome">
+        <div class="header-text">
+            <div class="container">
+                <div class="row">
+                    <div class="offset-xl-3 col-xl-6 offset-lg-2 col-lg-8 col-md-12 col-sm-12">
+                        <h1>Нужна <strong>помощь</strong>?<br>Волонтеры <strong>помогут</strong></h1>
+                        <p>Волонтерство — это добровольный акт отдельного человека или группы, который свободно посвящает время и труд общественным работам. Многие добровольцы служат на благо общества или отдельных социальных групп, без расчета на вознаграждение.</p>
+                        <a href="#contact-us" class="main-button-slider" style="font-family: 'Rubik', sans-serif;">ПОЛУЧИТЬ ПОМОЩЬ</a>
+                    </div>
+                </div> 
+            </div>
+        </div>
+    </div>
+
+    <section class="section home-feature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="row">
+
+                        {% macro feature(heading, text) -%}
+                        <div class="col-lg-4 col-md-6 col-sm-6 col-12" data-scroll-reveal="enter bottom move 50px over 0.6s after 0.2s">
+                            <div class="features-small-item">
+                                <div class="icon">
+                                    <i><img src="{{ url_for('static', filename='images/featured-item-01.png') }}" alt=""></i>
+                                </div>
+                                <h5 class="features-title">{{ heading }}</h5>
+                                <p>{{ text }}</p>
+                            </div>
+                        </div>
+                        {%- endmacro %}
+
+                        {{ feature('Новости', 'Тут последние новости о волонтерстве в Казахстане') }}
+                        {{ feature('Ценности', 'Может здесь разместить наши ценности') }}
+                        {{ feature('Новости', 'Тут могли быть новости о последних изменениях в сайте') }}
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section padding-top-70 padding-bottom-0" id="features">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-5 col-md-12 col-sm-12 align-self-center" data-scroll-reveal="enter left move 30px over 0.6s after 0.4s">
+                    <img src="{{ url_for('static', filename='images/left-image.png') }}" class="rounded img-fluid d-block mx-auto" alt="App">
+                </div>
+                <div class="col-lg-1"></div>
+                <div class="col-lg-6 col-md-12 col-sm-12 align-self-center mobile-top-fix">
+                    <div class="left-heading">
+                        <h2 class="section-title">Что такое Volus?</h2>
+                    </div>
+                    <div class="left-text">
+                        <p>Volus – это волонтерская платформа, напрямую связывающая волонтеров и нуждающихся в их помощи людей.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="hr"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section padding-bottom-100">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 col-md-12 col-sm-12 align-self-center mobile-bottom-fix">
+                    <div class="left-heading">
+                        <h2 class="section-title">Как мы можем Вам помочь?</h2>
+                    </div>
+                    <div class="left-text">
+                        <p>Волонтерские центры, представленные на нашем сайте, предоставят Вам помощь в зависимости от необходимостей.</p>
+                    </div>
+                </div>
+                <div class="col-lg-1"></div>
+                <div class="col-lg-5 col-md-12 col-sm-12 align-self-center mobile-bottom-fix-big" data-scroll-reveal="enter right move 30px over 0.6s after 0.4s">
+                    <img src="{{ url_for('static', filename='images/right-image.png') }}" class="rounded img-fluid d-block mx-auto" alt="App">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- <section class="mini" id="work-process">
+        <div class="mini-content">
+            <div class="container">
+                <div class="row">
+                    <div class="offset-lg-3 col-lg-6">
+                        <div class="info">
+                            <h1>Волонтерские организации</h1>
+                            <p>Volus стал возможным благодаря привлечению и основательной подготовке волонтерских организаций, которые содействуют организации помощи на дому, медицинского ухода, временного патронатного ухода и деятельности центров по уходу в дневное время.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+
+                    {% macro organization(strong='Волотерский центр <name>', text='Краткое описание', filename='images/work-process-item-01.png', href='#') -%}
+                        <div class="col-lg-2 col-md-3 col-sm-6 col-6">
+                            <a href="{{ href }}" class="mini-box">
+                                <i><img src="{{ url_for('static', filename=filename) }}" alt=""></i>
+                                <strong>{{ strong }}</strong>
+                                <span>{{ text }}</span>
+                            </a>
+                        </div>
+                    {%- endmacro %}
+
+                    {{ organization('Волонтерский центр «Феникс»', 'Cсылка на их инстаграм') }}
+                    {{ organization('Волонтерский клуб «Аманат»') }}
+                    {{ organization() }}
+                    {{ organization() }}
+                    {{ organization() }}
+                    {{ organization() }}
+
+                </div>
+
+            </div>
+        </div>
+    </section> -->
+
+    <section class="section" id="testimonials">
+        <div class="container">
+            <div class="row">
+
+                <div class="col-lg-12">
+                    <div class="center-heading">
+                        <h2 class="section-title">Обратная связь наших клиентов</h2>
+                    </div>
+                </div>
+
+                <div class="offset-lg-3 col-lg-6">
+                    <div class="center-text">
+                        <p>Люди? нуждавшиеся в помощи или люди желающие вступить в волонтерскую организацию.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                {% macro testimonial(image, text, from, category) -%}
+                    <div class="col-lg-4 col-md-6 col-sm-12">
+                        <div class="team-item">
+                            <div class="team-content">
+                                <i><imgalt=""></i>
+                                <p>{{ text }}</p>
+                                <div class="user-image">
+                                    <img src="{{ url_for('static', filename='images/' + image) }}" alt="" width="60" height="60">
+                                </div>
+                                <div class="team-info">
+                                    <h3 class="user-name">{{ from }}</h3>
+                                    <span>{{ category }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {%- endmacro %}
+
+                {{ testimonial(image='m2.png', text='С помощью данного веб-сайта достучаться до волонтерских центров как раньше не является проблемой.', from='Алексей Петрович', category='Инвалид') }}
+                {{ testimonial(image='m1.png', text='Раньше волонтеры приходили раз в пол года, сейчас же благодаря Volus, я могу получить мгновенную помощь.', from='Кайрат Нурмагамбетулы' ,category='Пенсионер') }}
+                {{ testimonial(image='w3.png', text='Volus помог нам в очень тяжелые времена и облегчил процесс получения помощи от недобродушных людей.' ,from='Алия Кадыровна', category='Многодетная мать') }}
+                
+            </div>
+        </div>
+    </section>
+
+    <section class="section colored" id="pricing-plans">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="center-heading" id="for-volunteers">
+                        <h2 class="section-title">Хочешь стать частью Volus?</h2>
+                    </div>
+                </div>
+                <div class="offset-lg-3 col-lg-6">
+                    <div class="center-text">
+                        <p>Стать частью Volus - легко. Выберите одну из данных категорий и подайте заявку. Вместе мы сможем помочь всем!</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                {% macro category(scroll_reveal, heading, title, info, link, button) -%}
+                <div class="col-lg-4 col-md-6 col-sm-12" data-scroll-reveal="{{ scroll_reveal }}">
+                    <div class="pricing-item">
+                        <div class="pricing-header">
+                            <h3 class="pricing-title">{{ heading }}</h3>
+                        </div>
+
+                        <div class="pricing-body">
+                            <div class="price-wrapper">
+                                <span class="price">{{ title }}</span>
+                            </div>
+                            
+                            <ul class="list">
+                                {% for text in info %}
+                                    <li class="active">{{ text }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+
+                        <div class="pricing-footer">
+                            <a href="{{ url_for(link) }}" class="main-button">{{ button }}</a>
+                        </div>
+                    </div>
+                </div>
+                {%- endmacro %}
+
+                {{ category('enter bottom move 50px over 0.6s after 0.2s', 'Все', 'Пожертвовать', ['Одежда', 'Еда (too good to be thrown)', 'Бытовая техника', 'Денежные пожертвование'], 'donate', 'Пожертвовать сейчас') }}
+
+                {{ category('enter bottom move 50px over 0.6s after 0.4s', 'Оставить заявку как', 'Волонтер', ['Работа в различных центрах', 'Развитие различных навыков', 'Сертификат о волонтерстве', 'Прямой контакт с волонтерами'], 'volunteer.register', 'РЕГИСТРАЦИЯ') }}
+
+                {{ category('enter bottom move 50px over 0.6s after 0.6s', 'Регистрация как', 'Физ Лицо', ['Работа в различных центрах', 'Развитие различных навыков', 'Сертификат о волонтерстве', 'Прямой контакт с волонтерами'], 'organization.register', 'РЕГИСТРАЦИЯ') }}
+
+            </div>
+        </div>
+    </section>
+
+    <section class="counter">
+        <div class="content">
+            <div class="container">
+                <div class="row">
+
+                    {% macro achievement(num, text) -%}
+                    <div class="col-lg-3 col-md-6 col-sm-12">
+                        <div class="count-item decoration-bottom">
+                            <strong>{{ num }}</strong>
+                            <span>{{ text }}</span>
+                        </div>
+                    </div>
+                    {%- endmacro %}
+
+                    {{ achievement(126, 'Выполненных проектов') }}
+
+                    {{ achievement(79, 'Волонтеров') }}
+                    
+                    {{ achievement(12, 'Наград') }}
+
+                    {{ achievement(597, 'Довольных людей') }}
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- <section class="section" id="blog">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="center-heading">
+                        <h2 class="section-title">Интересные факты</h2>
+                    </div>
+                </div>
+                <div class="offset-lg-3 col-lg-6">
+                    <div class="center-text">
+                        <p>Волонтерство - это удивительное занятие</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+
+                {% macro fact(image, description) -%}
+                    <div class="col-lg-4 col-md-6 col-sm-12">
+                        <div class="blog-post-thumb">
+                            <div class="img">
+                                <img src="{{ url_for('static', filename=image) }}" alt="">
+                            </div>
+                            <div class="blog-content">
+                                <h3>
+                                    <a href="#">{{ link_text }}</a>
+                                </h3>
+                                <div class="text">{{ description }}</div>
+                            </div>
+                        </div>
+                    </div>
+                {%- endmacro %}
+                
+                {{ fact('images/blog-item-01.png', 'В наше время, опыт волонтерства бесценнен. Например, многие университеты требуют сертификат о волонтерстве для поступления на различные программы.') }}
+
+                {{ fact('images/blog-item-02.png', 'Более 1300 семей в Акмолинской области получают помощь от волонтеров с пяти различных волонтерских центров. ') }}
+
+                {{ fact('images/blog-item-03.png', 'Мы тщательно храним и защищаем личную конфиденциальную информацию о пользователях, и предоставляем её только аккредитированным лицам.') }}
+
+            </div>
+        </div>
+    </section> -->
+    
+
+            {% macro form_field(name, id, plc, title, pattern, required=true) -%}
+                <div class="col-lg-6 col-md-12 col-sm-12">
+                    <fieldset>
+                        <input name="{{ name }}" type="text" title="{{ title }}" class="form-control" id="{{ id }}" pattern="{{ pattern }}" placeholder="{{ plc }}" {% if required %} required {% endif %}>
+                    </fieldset>
+                </div>
+            {%- endmacro %}
+
+            <section class="section colored" id="contact-us">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="center-heading">
+                                <h2 class="section-title">Пройдите минутную регистрацию и получите помощь</h2>
+                            </div>
+                        </div>
+                        <div class="offset-lg-3 col-lg-6">
+                            <div class="center-text">
+                                <p>После отправлении заявки, волонтеры свяжутся с вами в течение двух рабочих дней.</p>
+                            </div>
+                        </div>
+                    </div>
+    
+                    <div class="row">
+                        <div class="col-lg-4 col-md-6 col-sm-12">
+                            <h5 class="margin-bottom-30">Не бойтесь попросить о помощи</h5>
+                            <div class="contact-text">
+                                <p>Ваша персональная информация не будет разглашена третьим лицам
+                                <br></p>
+                                <p>Данная информация нужна для того, чтобы волонтеры смогли связаться с Вами</p>
+                            </div>
+                        </div>
+                        
+                        
+
+                        <div class="col-lg-8 col-md-6 col-sm-12">
+                            <div class="contact-form">
+                                <form id="contact" name="details" action="{{ url_for('help.edit_profile') }}" method="GET">
+                                <div class="row">
+
+                                    {{ form_field('name', 'name', 'ФИО', 'Имя должно содержать только кириллицу', '[\u0400-\u04ff ]{3,200}') }}
+                                    {{ form_field('home_number', 'home_number', 'Домашний или сотовый телефон', 'Номер должен быть 6 или 11 значным числом, несодержащим +' ,'\d{6,12}') }}
+
+                                    <div class="col-lg-12">
+                                    <fieldset>
+                                        <textarea name="about" rows="6" class="form-control" id="message" maxlength="10000" placeholder="Пожалуйста скажите в какой типе помощи Вы нуждаетесь (Необязательно)"></textarea>
+                                    </fieldset>
+                                    </div>                                    
+
+                                    <div class="col-lg-12">
+                                    <fieldset>
+                                        <button type="submit" id="form-submit" class="main-button">ОТПРАВИТЬ</button>
+                                    </fieldset>
+                                    </div>
+                                    
+                                </div>                                
+                                </form>
+                            </div>
+                        </div>                    
+                    </div>
+                    <section class="section colored" id="contact-us">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="center-heading">
+                                        <h2 class="section-title">Или войдите в существующий аккант</h2>
+                                    </div>
+                                </div>
+                                <div class="offset-lg-3 col-lg-6">
+                                    <div class="center-text">
+                                        <p>Заполнив поле ИИН, вы сможете войти в свой аккаунт Volus и подать заявку на помощь</p>
+                                    </div>
+                                </div>
+                            </div>
+            
+                            <div class="row">
+                                <div class="col-lg-4 col-md-6 col-sm-12">
+                                    <h5 class="margin-bottom-30">Не бойтесь попросить о помощи</h5>
+                                    <div class="contact-text">
+                                        <p>Ваша персональная информация не будет разглашена третьим лицам
+                                        <br></p>
+                                        <p>Данная информация нужна для того, чтобы волонтеры смогли связаться с Вами</p>
+                                    </div>
+                                </div>                               
+                                
+        
+                                <div class="col-lg-8 col-md-6 col-sm-12">
+                                    <div class="contact-form">
+                                        <form id="contact" name="details" action="{{ url_for('help.login') }}" method="GET">
+                                        <div class="row">
+        
+                                            {{ form_field('iin', 'iin', 'ИИН', 'ИИН должен быть 12 значным числом' ,'\d{12}') }}                                         
+        
+                                            <div class="col-lg-12">
+                                            <fieldset>
+                                                <button type="submit" id="form-submit" class="main-button">войти</button>
+                                            </fieldset>
+                                            </div>
+                                            
+                                        </div>                                
+                                        </form>
+                                    </div>
+                                </div>                    
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </section>
+
+            
+
+                    
+            
+            <footer>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12">
+                            <ul class="social">
+                                <li><a href="https://github.com/Madi-S"><i class="fa fa-facebook"></i></a></li>
+                                <li><a href="https://github.com/Madi-S"><i class="fa fa-twitter"></i></a></li>
+                                <li><a href="https://github.com/Madi-S"><i class="fa fa-linkedin"></i></a></li>
+                                <li><a href="https://github.com/Madi-S"><i class="fa fa-rss"></i></a></li>
+                                <li><a href="https://vk.com/mshaiken"><i class="fa fa-dribbble"></i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <p class="copyright">Copyright &copy; 2021 Volus - Все права защищены - Дизайн: Madi-S</p>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+    
+    <script src="{{ url_for('static', filename='js/jquery-2.1.0.min.js') }}"></script>
+
+    <!-- <script src="{{ url_for('static', filename='vendor/bootstrap/js/popper.js') }}"></script> -->
+    <script src="{{ url_for('static', filename='vendor/bootstrap/js/bootstrap.min.js') }}"></script>
+
+    <script src="{{ url_for('static', filename='js/scrollreveal.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/waypoints.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/jquery.counterup.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/imgfix.min.js') }}"></script> 
+    
+    <script src="{{ url_for('static', filename='js/custom.js') }}"></script>
+
+    </body>
+</html>

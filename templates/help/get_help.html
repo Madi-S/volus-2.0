@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Получить помощь
+{% endblock %}
+
+
+{% block content %}
+
+    {{ heading('Заполните данную форму и полуте моментальную помощь от волонтеров') }}
+
+    <form id="help_query" class="flow-text" action="{{ url_for('help.get_help') }}" name="profile_form" method="POST">
+
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+        
+        <div class="row">
+
+            <div class="col s12">
+                <p>Автоматически переотправлять запрос о помощи (Не нужно будет перезаполять данную форму):</p>
+
+                {{ choose('Каждый месяц', '744', 'duration', type='radio', required=true) }}
+
+                {{ choose('Каждую неделю', '168', 'duration', type='radio') }}
+
+                {{ choose('Каждые три дня', '72' , 'duration', type='radio') }}
+
+                {{ choose('Это единоразовый запрос на помощь', 'None' , 'duration', type='radio') }}
+
+            </div>
+
+            <div class="col s12">
+                <p>Тип помощи:</p>
+
+                {{ choose('Инвалидность', 'Инвалидность', 'help_type') }}
+
+                {{ choose('Сопровождение по городу', 'Сопровождение по городу', 'help_type') }}
+
+                {{ choose('Чистка дома', 'Чистка дома', 'help_type') }}
+
+                {{ choose('Поиск пропавшего человека', 'Поиск пропавшего человека', 'help_type') }}
+
+                {{ choose('Помощь бездомным животным', 'Помощь бездомным животным', 'help_type') }}
+
+                {{ choose('Диспетчерская помощь', 'Диспетчерская помощь', 'help_type') }}
+
+                {{ choose('Помощь по дому', 'Помощь по дому', 'help_type') }}
+
+                {{ choose('Провизия (продукты, одежда, техника и т.д.)', 'Провизия', 'help_type') }}
+
+                {{ choose('Общение', 'Общение', 'help_type') }}
+
+                {{ choose('Другое', 'Другое', 'help_type') }}
+
+            </div>
+
+            <div class="col s12">
+                <p>Опишите проблему (необязятально):</p>
+                <textarea maxlength="20000" name="problem" placeholder="Нужно принести воду. Нужно покрмить собак. Нужны продукты." id="about" class="materialize-textarea"></textarea>
+            </div>
+
+            <div align="center" class="right-align">
+                <button id="submit" style="border-radius: 10px;" class="#039be5 light-blue darken-1 pulse btn waves-effect waves-light" type="submit" name="action">готово
+                <i class="material-icons right">send</i>
+                </button>
+            </div>
+
+        </div>
+
+  </form>
+
+  <script>
+    (function() {
+        const form = document.querySelector('#help_query');
+        const checkboxes = form.querySelectorAll('input[type=checkbox]');
+        const checkboxLength = checkboxes.length;
+        const firstCheckbox = checkboxLength > 0 ? checkboxes[0] : null;
+    
+        function init() {
+            if (firstCheckbox) {
+                for (let i = 0; i < checkboxLength; i++) {
+                    checkboxes[i].addEventListener('change', checkValidity);
+                }
+    
+                checkValidity();
+            }
+        }
+    
+        function isChecked() {
+            for (let i = 0; i < checkboxLength; i++) {
+                if (checkboxes[i].checked) return true;
+            }
+    
+            return false;
+        }
+    
+        function checkValidity() {
+            const errorMessage = !isChecked() ? 'Выберите как минимум один вариант' : '';
+            firstCheckbox.setCustomValidity(errorMessage);
+        }
+    
+        init();
+        })();
+    </script>
+{% endblock %}

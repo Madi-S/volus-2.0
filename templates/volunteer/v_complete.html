@@ -1,0 +1,61 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+    Выполненть заявку на помощь
+{% endblock %}
+
+
+{% block content %}
+<div class="container z-depth-1 round-border content #e0f7fa cyan lighten-4"  style="border-radius: 23px;">
+    <h3 class="center-align special-heading"> Заполните данную форму </h3> 
+    <div class="row">
+        <form class="col s12" action="{{ url_for('volunteer.complete', notification_id=data.get('notification_id')) }}" method="POST">
+
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+
+          <div class="flow-text offset-s1 s11">
+            <p>Помощь получил: {{ data.get('needy_name') }} </p>
+            <p>Тип помощи: {{ data.get('help_type') }} </p>
+            <p>Доп информация о заявки на помощь: {{ data.get('hq_about') }} </p>
+            <p>Номер заявки на помощь: {{ data.get('hq_id') }} </p>
+            <hr>
+            <p>Идентификатор волонтера: {{ data.get('vol_id') }} </p>
+            <p>Идентификатор нуждающегося: {{ data.get('needy_id') }} </p>
+          </div>
+
+          <div class="row">
+            <div class="input-field col s12">
+              <input name="vol_name" id="vol_name" type="text" class="validate" disabled value="{{ data.get('vol_name','') }}" required>
+              <label for="vol_name">Помощь оказал</label>
+          </div>
+
+          <div class="input-field col s12">
+              <input placeholder="120" name="minutes" id="minutes" type="text" class="validate" pattern="[\d]{1,4}" value="{{ data.get('minutes', '') }}" required>
+              <label for="minutes">Кол-во отработанных минут</label>
+          </div>
+
+          <div class="input-field col s12">
+              <textarea id="about" name="about" class="materialize-textarea" required>{{ data.get('about', '') }}</textarea>
+              <label for="about">Дополнительная информация</label>
+          </div>
+
+          <p class="col s12">
+              <label>
+              <input type="checkbox" required/>
+              <span>Я подтверждаю, что вышеуказанная информация является достоверной. Недостоверность ввёденных данных может привести к блокировке аккаунта.</span>
+              </label>
+          </p>
+          </div>
+
+          <button class="btn waves-effect waves-light cyan lighten-1" style="border-radius: 20px;" type="submit" name="action">Подтвердить
+            <i class="material-icons right">send</i>
+          </button>
+
+        </form>
+    </div>
+
+</div>
+<br><br>
+
+
+{% endblock %}

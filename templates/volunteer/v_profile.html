@@ -1,0 +1,100 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+    Profile Page
+{% endblock %}
+
+
+{% block content %}
+<div class="container z-depth-5 round-border content #e0f7fa cyan lighten-4" style="border-radius: 23px;">
+    <div class="row">
+        <h3 class="center-align special-heading"> Ваш профиль </h3> 
+
+        {% macro input_fields(data) -%}
+
+            {% for fields in data %}
+
+                {% set s = 12 // fields|length %}
+
+                {% set class_ = 'input-field col s' + s|string %}
+
+                {% for label, other in fields.items() %}
+
+                    {% set value, input_name, regex, required = other %}
+
+                    <div class="{{ class_ }}">
+                        <input  {% if not edit %} disabled {% endif %} {% if required %} required {% endif %} class="validate" name="{{ input_name }}" pattern="{{ regex }}" value="{{ value }}" id="{{ input_name }}" type="text">
+                        <label for="{{ input_name }}">{{ label }}</label>
+                    </div>
+
+                {% endfor %}
+
+            {% endfor %}
+
+        {%- endmacro %}
+
+
+        <div class="row">
+            <form {% if edit %} action="{{ url_for('volunteer.edit_profile') }}" method="POST" {% endif %} class="col s12">
+                {% if 'org' in session %}
+
+                    {% set data=(
+                        {
+                            'Адрес': (user.addr, 'addr', '^[A-Za-z0-9\u0400-\u04ff ,."-_:]{5,150}$', false),
+                        },
+                        {
+                            'Контактный номер телефона': (user.contact_phone, 'contact_phone', '^[0-9]{11}$', false),
+                            'Контактная электронная почта': (user.contact_email, 'contact_email', '^[A-Za-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$', false),
+                        },
+                        {
+                            'Название организации': (user.org_name, 'org_name', '^[A-Za-z0-9\u0400-\u04ff "-_:]{3,150}$', true),
+                            'Ваш ФИО': (user.owner_name, 'owner_name', '^[\u0400-\u04ff ]{3,150}$', true),
+                        },
+                        {
+                            'Ваш Номер телефона': (user.owner_phone, 'owner_phone', '^[0-9]{11}$', true),
+                            'Ваша Электронная почта': (user.owner_email, 'owner_email', '^[A-Za-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$', false),
+                        },
+                        {
+                            'Доп информация': (user.about, 'about', '^[A-Za-z0-9\u0400-\u04ff ,."-_:]{5,150}$', false),
+                        }
+                    ) %}
+
+                {% else %}
+
+                    {% set data=(
+                        {
+                            'Фамилия': (user.last_name, 'last_name', '^[\u0400-\u04ff]{3,100}$', true),
+                            'Имя': (user.first_name, 'first_name', '^[\u0400-\u04ff]{3,100}$', true),
+                            'Отчество': (user.middle_name, 'middle_name', '^[\u0400-\u04ff]{3,100}$', true),
+                        },
+                        {
+                            'Электронная почта': (user.email, 'email', '^[A-Za-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$', true),
+                            'Номер телефона': (user.phone_number, 'phone_number', '^[0-9]{11}$', true),
+                        },
+                        {
+                            'Доп информация': (user.about, 'about', '^[A-Za-z0-9\u0400-\u04ff ,."-_:]{5,150}$', false),
+                        }
+                     ) %}
+
+                {% endif %}
+
+                {{ input_fields(data) }}
+
+                {% if not edit %}
+
+                    <a style="border-radius: 20px;" href="{{ url_for('volunteer.edit_profile') }}"  class="waves-effect waves-light btn #00bcd4 cyan"><i class="material-icons left">border_color</i>изменить</a>                
+                
+                {% else %}
+
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>   
+
+                    <button style="border-radius: 20px;" type="submit" class="btn btn-primary #00bcd4 cyan"><i class="material-icons left ">border_color</i>подтвердить</button>
+
+                {% endif %}
+
+            </form>
+          </div>
+    </div>
+</div>
+<br><br><br><br><br><br>
+{% endblock %}

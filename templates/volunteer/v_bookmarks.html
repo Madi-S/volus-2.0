@@ -1,0 +1,41 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+    Bookmarks Page
+{% endblock %}
+
+
+{% block content %}
+<div class="container z-depth-1 round-border content"  style="border-radius: 23px;">
+    <div class="row">
+       <h3 class="center-align special-heading"> Ваши закладки </h3> 
+
+       {% for b in bookmarks %}
+           {% set i = loop.index - 1 %}
+
+            <div class="col s12">
+                <div class="card center-align #b2ebf2 cyan lighten-4">
+                    <div class="card-content flow-text cyan-text">
+
+                        <span class="card-title">Закладка</span>                
+                        <p>Добавлена: {{ b.date.strftime('%d.%m.%y %H:%m') }}</p>
+
+                    </div>
+
+                    <div class="card-action #ffffff #b2ebf2 cyan lighten-3">
+                        <a href="{{ url_for('volunteer.query', query_slug=b.help_query_slug) }}" style="color: #00bcd4"><b>Перейти к заявке</b></a>               
+                    </div>
+                
+                </div>
+           
+            </div>
+        
+        {% else %}
+
+            <p align="center" class="flow-text">Здесь пока пусто, можете добавить заяки на помощи в закладки кликнув по звездочке.</p>
+            <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

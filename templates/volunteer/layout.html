@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+
+  {% macro head(url, label) -%}
+    <div class="left-align col content">
+      <a style="border-radius: 10px;" href="{{ url_for(url) }}" class="#00bcd4 cyan waves-effect waves-light btn z-depth-3">{{ label }}</a>
+      <div>
+        &nbsp;
+      </div>
+    </div>
+    
+  {%- endmacro %}
+
+
+
+<head>
+    <meta charset="UTF-8">
+  
+    <title>
+        {% block title %}
+
+        {% endblock %} | Volus
+    </title>
+    
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@700&display=swap" rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500&display=swap" rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/css2?family=Commissioner:wght@570&display=swap" rel="stylesheet">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+    <style>
+
+      .alert {
+        padding: 20px;
+        background-color: #0097a7;
+        color: white;
+      }
+      
+      .closebtn {
+        margin-left: 15px;
+        color: white;
+        font-weight: bold;
+        float: right;
+        font-size: 22px;
+        line-height: 20px;
+        cursor: pointer;
+        transition: 0.3s;
+      }
+      
+      .closebtn:hover {
+        color: black;
+      }      
+
+      .bold {
+        font-family: 'Noto Sans', sans-serif;
+      }
+
+      .content {
+        font-family: 'Inter', sans-serif;
+      }
+
+      .collapsible-js {
+        cursor: pointer;
+      }
+            
+      .collapsible-content {
+        padding: 0 18px;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.2s ease-out;
+        background-color: #e0f7fa;
+      }
+
+    .special-heading {
+      font-family: 'Commissioner', sans-serif;
+      color: #0d8286;
+    }
+
+    </style> 
+
+  </head>
+
+<body>
+ 
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      {% for category, message in messages %}
+
+        <!-- <div align="center" class="alert alert-{{ category }} alert-dismissible" role="alert">
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <strong >{{ message }}</strong> 
+        </div> -->
+
+        <div class="alert flow-text">
+          <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
+          <strong>Внимание: </strong>{{ message }}
+        </div>
+        
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+
+  <div class="#b2ebf2 cyan lighten-4 row s12">
+
+      {{ head('volunteer.index', 'главная') }}
+
+      {{ head('volunteer.profile', 'профиль') }}
+
+      {% if 'org' in session %}
+
+        {{ head('volunteer.colleagues', 'волонтеры') }}
+
+        {{ head('organization.generate_keys', 'добавить волонтеров') }}
+
+      {% else %}
+
+        {{ head('volunteer.colleagues', 'организации') }}      
+
+        {{ head('volunteer.history', 'история') }}
+
+        <!-- {{ head('volunteer.join_org', 'вступить в органзации') }} -->
+
+      {% endif %}
+
+      {{ head('volunteer.bookmarks', 'закладки') }}
+
+      <!-- {{ head('volunteer.news', 'новости') }} -->
+
+
+      <div class="left-align col content">
+        <a style="border-radius: 10px;" href="{{ url_for('volunteer.notifications') }}" class="#00bcd4 cyan waves-effect waves-light btn z-depth-3">
+
+          {% if session.get('unread_notifications') %}
+            <i class="large material-icons">notifications</i>
+          {% endif %}
+
+          Уведомления
+        </a>
+        <div>
+          &nbsp;
+        </div>
+      </div>
+      
+      <a href="{{ url_for('volunteer.logout') }}" class="btn-flat">Выйти</a> 
+
+    <div>
+      &nbsp;
+    </div>
+
+  </div>
+
+  <div>
+    &nbsp;
+  </div>
+
+ 
+    {% block content %}  
+
+    {% endblock %}
+  
+
+  <div>
+    &nbsp;
+  </div>
+  <div>
+    &nbsp;
+  </div>
+  <div>
+    &nbsp;
+  </div>
+
+
+  <footer class="page-footer #4dd0e1 cyan lighten-2">
+    <div class="container">
+      <div class="row">
+        <div class="col l6 s12">
+          <h5 class="white-text">Volus - добровольная помощь от волонтеров</h5>
+          <p class="grey-text text-lighten-4" style="text-align:justify">Volus помогает волонтерам с Акмолинской области находить по-настоящему нуждыющихся в помощи людей. С помощью данного веб-сервиса волонтеры могут получать заявки на помощи от нуждавщихся людей.</p>
+          <p class="grey-text text-lighten-4">Мы не распространяем личные данные о Вас</p>
+        </div>
+        <div class="col l4 offset-l2 s12">
+          <h5 class="white-text">Социальные сети</h5>
+          <ul>
+            <li><a class="grey-text text-lighten-3" href="https://www.instagram.com/volunteer_us/">Instagram</a></li>
+            <li><a class="grey-text text-lighten-3" href="https://www.facebook.com/volunteer.us.710">Facebook</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="footer-copyright">
+      <div class="container">
+      © 2021 Copyright
+      <a class="grey-text text-lighten-4 right" href="https://github.com/Madi-S">Github</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+
+</html>

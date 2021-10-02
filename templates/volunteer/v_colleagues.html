@@ -1,0 +1,95 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+    Bookmarks Page
+{% endblock %}
+
+
+{% block content %}
+    <div class="container z-depth-1 round-border content #e0f7fa cyan lighten-4"  style="border-radius: 23px;">
+        
+
+            <h3 class="center-align special-heading">
+                {% if  colleagues %}
+                    {% if as_vol %} Ваши волонтерские организации {% else %} Ваши волонтеры {% endif %}
+                {% else %}
+                У вас пока нет зарегистрированных волонтеров, передайте им ключи регистрации, которые можно сгенерировать с помощью кнопки "Добавить волонтеров"
+                <br><br><br><br><br><br><br><br><br><br><br><br><br>
+                {% endif %}
+            </h3>
+
+
+        <h3 class="center-align special-heading">  </h3> 
+        <ul class="collapsible">
+            {% for c in colleagues %}
+            
+                {% set i = loop.index %}
+                
+                {% if as_vol %}
+
+                    <li class="flow-text">
+                        <div class="collapsible-header collapsible-js #e0f7fa cyan lighten-5">
+                            <i class="material-icons">streetview</i>
+                            Организация: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ c.org_name }}
+                            <span class="badge">{{ i }}</span>
+                        </div>
+                        <div class="collapsible-content #e0f7fa cyan lighten-4">
+                            <p>Адрес: {{ c.addr }}</p>
+                            <p>Руководитель: {{ c.owner_name }}</p>
+                            <p>Мобильный номер руководителя: {{ c.owner_phone }}</p>
+                            <p>Контактный телефон: {{ c.contact_phone }}</p>
+                            <p>Электронный адрес почты: {{ c.contact_email }}</p>
+                            <p>Об организации: {{ c.about }}</p>
+                        </div>
+                    </li>
+
+                {% else %}
+
+                <li class="flow-text">
+                    <div class="collapsible-header collapsible-js #e0f7fa cyan lighten-5">
+                        <i class="material-icons">accessibility</i>
+                        Волонтер: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ c.first_name + ' ' + c.last_name }}
+                        <span class="badge">{{ i }}</span>
+                    </div>
+                    <div class="collapsible-content #e0f7fa cyan lighten-4">
+                        <p>ФИО: {{ c.last_name + ' ' + c.first_name + ' ' + c.middle_name }}</p>
+                        <p>Мобильный номер: {{ c.phone_number }}</p>
+                        <p>Электронный адрес почты: {{ c.email }}</p>
+                        <p>О волонтере: {{ c.about }}</p>
+                        <p>Дата рождения: {{ c.date_of_birth }}</p>
+                        <p>Откликнулся на помощь {{ c.get_completed_help_queries_count() }} раз</p>
+                    </div>
+                </li>
+
+                {% endif %}
+
+            {% endfor %}
+    </ul>
+      
+</div>
+
+{% if as_vol %}
+
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+{% endif %}
+
+<script>
+    var coll = document.getElementsByClassName("collapsible-js");
+    var i;
+    
+    for (i = 0; i < coll.length; i++) {
+      coll[i].addEventListener("click", function() {
+        var content = this.nextElementSibling;
+        if (content.style.maxHeight){
+          content.style.maxHeight = null;
+        } else {
+          content.style.maxHeight = content.scrollHeight + "px";
+        } 
+      });
+    }
+</script>
+
+
+{% endblock %}
+

@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Мой Профиль Нуждающегося
+{% endblock %}
+
+
+{% macro avatar(value, image, checked=false) -%}
+  <label>
+    <input value="{{ value }}" name="avatar" type="radio" {% if checked %} checked {% endif %} />
+      <span>
+        <img width="65" height="70" src="{{ url_for('static', filename=image) }}" alt="{{ value }}">
+      </span>
+  </label>
+{%- endmacro %}
+
+
+{% block content %}
+
+  {{ heading(session.get('heading', 'Заполните форму и получите помощь прямо сейчас!')) }}
+
+  <form action="{{ url_for('help.edit_profile') }}" name="profile_form" method="POST">
+
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+
+    <div class="row">
+        
+      {{ input('ФИО', 'name', 'Иванов Иван Иванович', '[\u0400-\u04ff ]{3,200}', 'Имя должно содержать только кириллицу') }}
+
+      <div class="col s12">
+        <p>Пол</p>
+
+        {{ avatar('male', 'images/m3.png') }}
+
+        {{ avatar('female', 'images/w1.png', true) }}
+
+      </div>
+
+
+      {{ input('ИИН','iin', 'Введите ИИН', '\d{12}', 'ИИН должен быть 12 значным числом') }}
+
+      {{ input('Адрес','addr', 'Район Улица Дом (Необязательно)', '[0-9a-zA-Z\u0400-\u04ff -;,./#]{3,200}', 'Адрес должен содержать от 3 до 300 символов',false) }}
+
+      {{ input('Домашний телефон','home_number', '123456 (Необязательно)', '\d{6}', 'Домашний номер не должен содержать более, чем 6 цифр', false) }}
+
+      {{ input('Сотовый телефон', 'mobile_number', '+7-(ХХХ)-ХХХ-ХХ-ХХ', '\d{11,12}', 'Мобильный номер должен содержать только цифры (вместо + введите 8)',false) }}
+
+      {{ input('Телефон близких', 'rel_number','+7-(ХХХ)-ХХХ-ХХ-ХХ (Необязательно)', '\d{6,12}', 'Номер должен быть 6 или 11 значным числом, несодержащим +',false) }}
+
+      <div class="col s12">
+        <p>Тип помощи</p>
+
+          {{ choose('Инвалидность', 'Инвалидность', 'help_type', checked=true if 'handicapped' in session.get('help_type','')) }}
+
+          {{ choose('Помощь по дому', 'Помощь по дому', 'help_type') }}
+
+          {{ choose('Провизия (продукты, одежда, техника и т.д.)', 'Провизия (продукты, одежда, техника и т.д.)', 'help_type') }}
+
+          {{ choose('Общение', 'Общение', 'help_type') }}
+
+          {{ choose('Другое', 'Другое', 'help_type') }}
+
+      </div>
+
+      <div class="col s12">
+        <p>О себе</p>
+        <textarea maxlength="20000" name="about" placeholder="Болят ноги, тяжело приносить воду. (Необязательно)" id="about" class="materialize-textarea">
+          {{ session.get('about', '') }}
+        </textarea>
+      </div>
+
+      <div class="right-align">
+        <button style="border-radius: 10px;" class="#039be5 light-blue darken-1 pulse btn waves-effect waves-light" type="submit" name="action">готово
+          <i class="material-icons right">send</i>
+        </button>
+      </div>
+
+    </div>
+
+  </form>
+{% endblock %}

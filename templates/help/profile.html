@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+
+{% set data = {'Имя': 'name','ИИН':'iin', 'Адрес':'addr', 'Домашний телефон':'home_number', 'Сотовый телефон':'mobile_number', 'Телефон близких':'rel_number', 'Пол':'avatar', 'О себе': 'about'} %}
+
+{% set help_types = session.get('help_type', []) %}
+
+
+
+{% macro field(label, key) -%}
+    {% set value = session.get(key, '') %}
+    <div class="input-field col s12 flow-text">
+        <input disabled value="{% if value %} {{ value }} {% else %} - {% endif %}" id="disabled" type="text" class="validate" />
+        <label for="disabled">{{ label }}</label>
+    </div>
+{%- endmacro %}
+
+
+{% macro checkbox(label) -%}
+    <p>
+    <label>
+        <input name="help_type" class="filled-in" type="checkbox" disabled="disabled" />
+        <span>{{ label }}</span>
+    </label>
+    </p>
+{%- endmacro %}
+
+
+
+{% block title %}
+    Мой профиль
+{% endblock %}
+
+
+
+{% block content %}
+    {{ heading('Это ваш профиль. Вы можете добавить или изменить данные') }}
+    <div class="row">
+    <br>
+
+    {% for label, key in data.items() %}
+
+        {{ field(label, key) }}
+
+    {% endfor %}
+
+    <div class="col s12">
+        {% for help_type in help_types %}
+
+            {{ checkbox(help_type) }}
+
+        {% endfor %}
+    </div>
+
+    <div class="right-align">
+        <form action="{{ url_for('help.edit_profile') }}">
+            <button style="border-radius: 10px;" class="#039be5 light-blue darken-1 btn waves-effect waves-light" type="submit" name="action">изменить данные
+                <i class="material-icons right">send</i>
+            </button>
+        </form>
+    </div>
+
+    </div>
+{% endblock %}

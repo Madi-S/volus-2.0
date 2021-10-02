@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Мои запросы на помощь | История
+{% endblock %}
+
+
+{% block content %}
+
+<div class="collection">
+
+    {% if not pages.items %}
+    
+        {{ heading('Вы еще не совершали.Запросов на помощь.Сделайте это с помощью синей кнопки выше') }}
+        <br><br><br>
+
+    {% endif %}
+
+    {% for query in pages.items %}
+
+        <div class="row">
+            <div class="col s12 m12">
+              <div class="card #039be5 light-blue darken-1 center-align">
+                <div class="card-content white-text">
+                  <span class="card-title">Запрос на помощь №{{ query.id }}</span>
+                  <p>Запрос на помощь от {{ query.date }}</p>
+                  <p>Категория: {{ query.help_type }}</p>
+                </div>
+                <div class="card-action #ffffff white">
+                  <a href="{{ url_for('help.query', query_slug=query.slug) }}" style="color: #039be5"><b><i>Подробнее</i></b></a>
+                  <a href="{{ url_for('help.change_status', help_query_id=query.id) }}" class="disabled" style="color: #039be5"><b><i>{% if query.completion_status %} <b>Возобновить</b> {% else %} <b>Оставить отзыв</b> {% endif %}</i></b></a>
+                  <a href="{{ url_for('help.delete_help', help_query_id=query.id) }}" class="disabled" style="color: #039be5"><b><i>Удалить</i></b></a>
+                </div>
+              </div>
+            </div>
+        </div>     
+        <ul class="collection">
+        </ul>
+
+    {% endfor %}
+
+
+      <ul class="pagination">
+
+        <li {% if pages.has_prev %} class="waves-effect" {% else %} class="disabled" {% endif %}>
+          <a {% if pages.has_prev %} href="./history?page={{ pages.prev_num }}" {% endif %}><i class="material-icons">chevron_left</i></a>
+        </li>
+        
+
+        {% for page in pages.iter_pages() %}
+        
+          <li {% if page == pages.page %} class="active #039be5 light-blue darken-1" {% else %} class="waves-effect" {% endif %}>
+            {% if page %}
+              <a href="./history?page={{ page }}">{{ page }}</a>
+            {% else %} 
+              <a>...<a/> 
+            {% endif %}
+          </a>
+        </li>
+          
+        {% endfor %}
+
+         
+        <li {% if pages.has_next %} class="waves-effect" {% else %} class="disabled" {% endif %}>
+          <a {% if pages.has_next %} href="./history?page={{ pages.next_num }}" {% endif %}><i class="material-icons">chevron_right</i></a>
+        </li>     
+
+      </ul>   
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Мои запросы на помощь | История
+{% endblock %}
+
+
+{% block content %}
+
+    <div class="collection">
+
+        {% for notification in notifications %}
+        
+            <p>Уведомление: {{ notification }}</p>
+
+        {% endfor %}
+
+    </div>
+
+{% endblock %}

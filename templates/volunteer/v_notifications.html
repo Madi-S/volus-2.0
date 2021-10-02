@@ -1,0 +1,73 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+    Messages Page
+{% endblock %}
+
+
+{% block content %}
+<div class="container z-depth-1 round-border content #e0f7fa cyan lighten-4"  style="border-radius: 23px;">
+    {% for notification in notifications %}
+
+        {% set i = loop.index - 1 %}
+
+        <div class="row">
+            <div class="col s12 m12">
+            <div class="card 00bcd4 cyan center-align">
+                <div class="card-content white-text flow-text">
+                    <span class="card-title">Новое Уведомление</span>
+
+                    {% if notification.from_volunteer %}
+
+                        <p>От волонтера: {{ info[i]['from'] }}</p>
+                        {% set accept_text = 'Разрешить' %}
+
+                    {% elif not 'org' in session %}
+
+                        <p>От организации: {{ info[i]['from'] }}, {{ info[i]['owner'] }}</p>
+                        {% set accept_text = 'Принять' %}
+
+                    {% endif %}
+
+                    <p>Нуждающийся: {{ notification.needy.name }}</p>
+                    <p>Дата: {{ notification.date.strftime('%d.%m.%y %H:%m') }}</p>
+
+                    {% if notification.accepted %}
+                    {# show complementary info on volunteer.query #}
+                    <br>
+                        <span class="card-title">Дополнительная информация о нуждающемся:</span>
+                        <p>{{ notification.needy.name }} по адресу {{ notification.needy.addr }}</p>
+                        <p>Домашний телефон: {{ notification.needy.home_number }}</p>
+                        <p>Номер знакомых: {{ notification.needy.relative_number }} </p>
+                        <p>Сотовый телефон: {{ notification.needy.mobile_number }} </p>
+
+                    {% elif not notification.accepted and accept_text %}
+                        <p>&nbsp;</p>
+                        <a href="{{ url_for('volunteer.accept_notifcation', notification_id=notification.id) }}" class="waves-effect waves-light btn #006064 cyan darken-2"><i class="material-icons left">check</i>{{ accept_text }}</a>
+                    {% endif %}
+                    
+
+                </div>
+                <div class="card-action #ffffff white">
+                <a href="{{ url_for('volunteer.query', query_slug=notification.help_query_slug) }}" style="color: #00bcd4"><b>Подробнее</b></a>
+                {% if notification.accepted %}
+                    <a href="{{ url_for('volunteer.complete', notification_id=notification.id) }}" style="color: #00bcd4"><b>Выполнено</b></a>
+                {% endif %}
+                </div>
+            </div>
+            </div>
+        </div>    
+        <ul class="collection">
+        </ul>
+
+    {% else %}
+
+    <h3 class="center-align special-heading"> У вас пока нет уведомлений </h3>
+    <p align="center" class="flow-text">Здесь пока пусто, отзывайтесь на запросы на помощь на главной странице. Затем получите разрешение от руководителя выбранного волонтерского центра для оказания помощи.</p>
+    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+    {% endfor %}
+
+</div>
+
+{% endblock %}

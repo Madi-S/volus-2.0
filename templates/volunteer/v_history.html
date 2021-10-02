@@ -1,0 +1,124 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+    History Page
+{% endblock %}
+
+
+{% block content %}
+
+<div class="container">
+  
+  {% if not queries %}
+
+    <h3 class="center-align special-heading"> У вас пока нет выполненных волонтерских актов, отзывайтесь на запросы на помощь на главной странице! </h3>
+    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+  {% else %}
+  
+    <h3 class="center-align special-heading">История оказанных волонтерских актов для {{ vol_name }}</h3>
+    <table class="striped responsive-table highlight">
+      <thead>
+        <tr>
+            <th>№</th>
+            <th>№ заявки на помощь</th>
+            <th>Информация о заявке на помощь</th>
+            <th>№ нуждающегося</th>
+            <th>ФИО Нуждающегося</th>
+            <th>№ организации</th>
+            <th>Организация</th>
+            <th>Дата начала оказания помощи</th>
+            <th>Кол-во отработанных минут</th>
+            <th>Дополнительная информация</th>
+            <th>Подтверждена руководителем?</th>
+            <th>Дата окончания оказания помощи</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {% for q in queries %}
+          <tr>
+            <td>{{ q.id }} </td>
+            <td>{{ q.help_query_id }} </td>
+            <td>{{ q.get_help_query_info() }} </td>
+            <td>{{ q.needy_id }} </td>
+            <td>{{ q.get_needy_name() }} </td>
+            <td>{{ q.org_id }} </td>
+            <td>{{ q.get_org_name() }} </td>
+            <td>{{ q.start_date.strftime('%d.%m.%y %H:%m') }} </td>
+            <td>{{ q.minutes }} </td>
+            <td>{{ q.about }} </td>
+            <td>{{ q.accepted }} </td>
+            <td>{{ q.completion_date.strftime('%d.%m.%y %H:%m') }} </td>
+          </tr>
+        {% endfor %}
+        
+      </tbody>
+    </table>
+
+  {% endif %}  
+  
+  {# {% if not pages.items %}
+
+      <h3 class="center-align special-heading"> Упс! Вы пока не отзывались на заявки на помощь </h3>
+      <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+    {% else %}
+
+    {% for query in pages.items %}
+
+      <div class="row">
+          <div class="col s12 m12">
+            <div class="card 00bcd4 cyan center-align">
+                <div class="card-content white-text flow-text">
+                  <span class="card-title">Выполненный запрос на помощь №{{ query.id }}</span>
+                  <p>Запрос на помощь от {{ query.needy.name }}</p>
+                  <p>Категория: {{ query.help_type }}</p>
+                  <p>Дата: {{ query.date.strftime('%d.%m.%y %H:%m') }}</p>
+
+                </div>
+                <div class="card-action #ffffff white">
+                <a href="{{ url_for('volunteer.query', query_slug=query.slug) }}" style="color: #00bcd4"><b><i>Подробнее</i></b></a>
+                </div>
+            </div>
+          </div>
+      </div>    
+      <ul class="collection">
+      </ul>
+        
+    {% endfor %}
+
+      <ul class="pagination">
+
+          <li {% if pages.has_prev %} class="waves-effect" {% else %} class="disabled" {% endif %}>
+            <a {% if pages.has_prev %} href="./?page={{ pages.prev_num }}" {% endif %}><i class="material-icons">chevron_left</i></a>
+          </li>
+          
+    
+          {% for page in pages.iter_pages() %}
+          
+            
+            {% if page %}
+              <li {% if page == pages.page %} class="active lighten-2 #00bcd4 cyan" {% else %} class="waves-effect" {% endif %}>
+                <a href="./?page={{ page }}">{{ page }}</a>
+              </li>
+            {% else %} 
+              <li style="font-size: 18px;">
+              <sub>...</sub>
+              </li>
+            {% endif %}
+
+          {% endfor %}
+    
+           
+          <li {% if pages.has_next %} class="waves-effect" {% else %} class="disabled" {% endif %}>
+            <a {% if pages.has_next %} href="./?page={{ pages.next_num }}" {% endif %}><i class="material-icons">chevron_right</i></a>
+          </li>     
+    
+        </ul>   
+      
+    {% endif %} #}
+
+</div>
+
+{% endblock %}

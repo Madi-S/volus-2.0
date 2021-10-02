@@ -1,0 +1,100 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+    Запрос на помощь # {{ query.id }}
+{% endblock %}
+
+
+{% block content %}              
+<div class="container z-depth-3 content #e0f7fa cyan lighten-3" style="border-radius: 23px;">
+
+    <div class="col s12 m7">
+        
+        <h4 class="center-align special-heading">Заявка на помощь #{{ query.id }} <a href="{{ url_for('volunteer.bookmarks_add_remove', query_slug=query.slug) }} "> <i class="small material-icons">bookmark</i></a></h4>
+        <div class="card horizontal">
+
+            
+            <div class="card-stacked">
+                <form action="{{ url_for('volunteer.submit_help', query_slug=query.slug) }}" method="POST" id="submitForm"> 
+                     
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>   
+
+                    <div class="card-content flow-text">
+                        <hr>
+                        <p> Тип помощи: {{ query.help_type }}</p>
+
+                        <p> Помощь запрашивает: {{ query.needy.name }}</p>
+
+                        <hr>
+                        <p> Заявка на помощь составлена: {{ query.date.strftime('%d/%m/%y %H:%m') }}</p>
+
+                        {% if query.duration %}
+                            <p> Помощь нужно оказывать каждые {{ query.duration.days  }} дней(-я)</p>
+                        {% endif %}
+                        <hr>                        
+                        
+                        <p> Дополнительная информация: {{ query.about }}</p>        
+
+                        {% set needy = query.needy %}
+
+                        {% if 'org' in session %}    
+                            <hr>                             
+
+                            <p>Домашний телефон: {{ needy.home_number }}</p>
+                            <p>Номер знакомых: {{ needy.relative_number }} </p>
+                            <p>Сотовый телефон: {{ needy.mobile_number }} </p>
+                            <p>Адрес: {{ needy.addr }} </p>
+                            <hr>
+                            <div>
+                                &nbsp;
+                            </div>
+
+                            <select class="browser-default" name="chosen_vol_id" required>
+                                <option value="" disabled selected>Выберете волонтера</option>
+        
+                                {% for volunteer in volunteers %}
+        
+                                    <option value="{{ volunteer.id }}">{{ volunteer.first_name + ' ' + volunteer.last_name }}</option>
+        
+                                {% endfor %}
+        
+                            </select>
+                            
+                        {% else %}
+                            <hr>
+                            <div>
+                                &nbsp;
+                            </div>
+                            <select class="browser-default" name="chosen_org_id" required>
+                                <option value="" disabled selected>Выберете организацию</option>
+        
+                                {% for org in orgs %}
+        
+                                    <option value="{{ org.id }}">{{ org.org_name }}</option>
+        
+                                {% endfor %}
+        
+                            </select>                                
+    
+                        {% endif %}      
+                        
+                        <div align="center">
+                            &nbsp;
+                            {{ recaptcha }} 
+                        </div>
+
+                    </div>
+                
+                </form>
+
+                <div class="card-action center-align">
+                    <a style="border-radius: 20px;" href="#" class="#00bcd4 cyan waves-effect waves-light z-depth-3 btn" onclick="document.getElementById('submitForm').submit()">Оказать помощь </a>
+                </div>
+
+                                        
+            </div>
+        </div>
+    </div>    
+</div>
+{% endblock %}
+

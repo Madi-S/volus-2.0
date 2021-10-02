@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Запрос на помощь # {{ query.id }}
+{% endblock %}
+
+
+{% block content %}
+
+<div class="collection">
+
+    <p> Идентификатор заявки на помощь: {{ query.id }}</p>
+    <p> Заявка на помощь составлена: {{ query.date.strftime('%d/%m/%y %H:%m') }}</p>
+
+    {% if query.organization_only %}
+    <p> Получать помощь только от волонтерских организаций</p>
+    {% else %}
+      <p> Получать помощь от волонтеров и волонтерских организаций</p>
+    {% endif %}
+
+    <p> Тип помощи: {{ query.help_type }}</p>
+    <p> Дополнительная информация: {{ query.about }}</p>
+
+    <hr>
+
+    <p>Заявка на помощь будет переотправляться каждые {{ query.duration.days }} дня (-ей)</p>
+
+    {% if query.completion_status %}
+
+      <p>Помощь была оказана {{ query.completion_date.strftime('%d/%m/%y %H:%m') }} </p>
+
+    {% endif %}
+    
+
+</div>
+
+{% endblock %}

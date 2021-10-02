@@ -1,0 +1,79 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+    Index Page
+{% endblock %}
+
+
+{% block content %}
+
+<div class="container z-depth-3 content #fafafa grey lighten-5" style="border-radius: 23px;">
+    {% if not pages.items %}
+        
+    <h3 class="center-align special-heading"> Извините, но пока нет подходящих запросов на помощь для вас </h3>
+    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+    
+    {% else %}
+
+    <h4 class="center-align special-heading"> Здесь размещены заявки на помощь от нуждающихся, вы можете на них отзываться </h4> 
+
+    {% endif %}
+
+
+    {% for query in pages.items %}
+
+        <div class="row">
+            <div class="col s12">
+              <div class="card center-align #00e5ff cyan accent-4">
+                  <div class="card-content white-text flow-text">
+                    <span class="card-title">Запрос на помощь №{{ query.id }}</span>
+                    <p>Запрос на помощь от {{ query.needy.name }}</p>
+                    <p>Категория: {{ query.help_type }}</p>
+                    <p>Дата: {{ query.date.strftime('%d.%m.%y %H:%m') }}</p>
+                  </div>
+                  <div class="card-action #ffffff #e0f7fa cyan lighten-5">
+                  <a href="{{ url_for('volunteer.query', query_slug=query.slug) }}" style="color: #00bcd4"><b>Подробнее</b></a>               
+                  </div>
+              </div>
+            </div>
+        </div>    
+        <ul class="collection">
+        </ul>
+        
+    {% endfor %}
+
+    {% if pages.items %}
+
+        <ul class="pagination">
+
+            <li {% if pages.has_prev %} class="waves-effect" {% else %} class="disabled" {% endif %}>
+              <a {% if pages.has_prev %} href="./?page={{ pages.prev_num }}" {% endif %}><i class="material-icons">chevron_left</i></a>
+            </li>
+            
+    
+            {% for page in pages.iter_pages() %}
+            
+              
+              {% if page %}
+                <li {% if page == pages.page %} class="active lighten-2 #00bcd4 cyan" style="border-radius: 9px;" {% else %} class="waves-effect" {% endif %}>
+                  <a href="./?page={{ page }}">{{ page }}</a>
+                </li>
+              {% else %} 
+                <li style="font-size: 18px;">
+                <sub>...</sub>
+                </li>
+              {% endif %}
+
+            {% endfor %}
+    
+             
+            <li {% if pages.has_next %} class="waves-effect" {% else %} class="disabled" {% endif %}>
+              <a {% if pages.has_next %} href="./?page={{ pages.next_num }}" {% endif %}><i class="material-icons">chevron_right</i></a>
+            </li>     
+    
+          </ul>
+          
+    {% endif %}
+
+</div>
+{% endblock %}

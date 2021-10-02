@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+
+
+{% macro input(label, title, name, plc, pattern=none, required=true, type='text', class='input100', id=none) -%}
+
+	<div class="wrap-input100 validate-input" data-validate="{{ title }}">
+		<span class="label-input100">{{ label }}</span>
+			<input class="{{ class }}" type="{{ type }}" name="{{ name }}" placeholder="{{ plc }}" title="{{ title }}"	 {% if id %} id="{{ id }}" {% endif %}	 {% if pattern %}  pattern="{{ pattern }}" {% endif %}	 {% if required %} required {% endif %}>
+		<span class="focus-input100"></span>
+
+	</div>
+
+{%- endmacro %}
+
+
+
+{% macro end_form(terms=true) -%}
+
+	<input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+
+	{% if terms %}
+		<div class="flex-m w-full p-b-33">
+			<div class="contact100-form-checkbox">
+				<input class="input-checkbox100" id="ckb1" type="checkbox" name="terms-agree" title="Поставьте галочку" disabled checked required>
+				<label class="label-checkbox100" for="ckb1">
+					<span class="txt1">
+						Я принимаю
+						<a href="/terms" class="txt2 hov1">
+							Пользовательское соглашение
+						</a>
+					</span>
+				</label>
+			</div>			
+		</div>
+	{% endif %}
+
+	{{ recaptcha }}
+
+	<div class="flex-m w-full p-b-33">
+		<div class="contact100-form-checkbox">
+				<span class="txt1">
+				</span>
+			</label>
+		</div>			
+	</div>
+
+
+	<div class="container-login100-form-btn">
+		<div class="wrap-login100-form-btn">
+			<div class="login100-form-bgbtn"></div>
+			<button type="submit" class="login100-form-btn">
+				Подтвердить
+			</button>
+		</div>
+
+		{% if terms %}
+			<a {% if org is defined %} href="{{ url_for('organization.login') }}" {% else %} href="{{ url_for('volunteer.login') }}" {% endif %} class="dis-block txt3 hov1 p-r-30 p-t-10 p-b-10 p-l-30">
+				Войти
+				<i class="fa fa-long-arrow-right m-l-5"></i>
+			</a> 
+		{% elif login is defined %}
+			{% if org is defined %}
+				<a href="{{ url_for('volunteer.login') }}" class="dis-block txt3 hov1 p-r-30 p-t-10 p-b-10 p-l-30">
+					Войти как волонтер
+					<i class="fa fa-long-arrow-right m-l-5"></i>
+				</a> 
+			{% else %}
+				<a href="{{ url_for('organization.login') }}" class="dis-block txt3 hov1 p-r-30 p-t-10 p-b-10 p-l-30">
+					Войти кака физ лицо
+					<i class="fa fa-long-arrow-right m-l-5"></i>
+				</a>
+
+			{% endif %}
+
+		{% endif %}
+	</div>
+
+{%- endmacro %}
+
+
+
+<html lang="en">
+<head>
+	{% if login is defined %}
+		<title>Вход</title>
+	{% else %}
+		<title>Регистрация</title>
+	{% endif %}
+
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap.min.css') }}">
+	
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='fonts/font-awesome-4.7.0/css/font-awesome.min.css') }}">
+	
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='fonts/Linearicons-Free-v1.0.0/icon-font.min.css') }}">
+	
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='fonts/iconic/css/material-design-iconic-font.min.css') }}">
+	
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='vendor/animate/animate.css') }}">
+	
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='vendor/css-hamburgers/hamburgers.min.css') }}">
+	
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='vendor/animsition/css/animsition.min.css') }}">
+	
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='vendor/select2/select2.min.css') }}">
+	
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='vendor/daterangepicker/daterangepicker.css') }}">
+	
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/util.css') }}">
+
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/main.css') }}">
+	
+	<style>
+		.alert {
+			padding: 12px;
+			border-radius: 3px;
+			font-size: 1.2rem;
+			margin-bottom: 16px;
+			border-width: 2px;
+			border-style: solid;
+			}
+
+			.alert-error {
+			border-color: darkred;
+			background-color: red;
+			color: rgb(214, 84, 177);
+			}
+
+			.alert-info {
+			border-color: orange;
+			background-color: yellow;
+			color: black;
+			}
+	</style>
+
+</head>
+<body style="background-color: #999999;">
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+		{% if messages %}
+			{% for category, message in messages %}
+				<div align="center" class="alert alert-{{ category }} alert-dismissible" role="alert">
+				<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				 <strong >{{ message }}</strong> 
+      		</div>
+    		{% endfor %}
+  		{% endif %}
+	{% endwith %}
+	
+	<div class="limiter">
+		<div class="container-login100">
+			<div class="login100-more" style="background-image: url('static/images/bg-01.jpg');"></div>
+
+			<div class="wrap-login100 p-l-50 p-r-50 p-t-72 p-b-50">
+				<span class="login100-form-title p-b-59">
+					{% if login is defined %}
+						Вход
+					{% else %}	
+						Регистрация
+					{% endif %}
+				</span>	
+
+				{% if org is defined %}
+
+					{% if login is defined %}
+
+						<form name="organization-login" action="{{ url_for('organization.login') }}" method="POST" class="login100-form validate-form">
+
+							{{ input('Логин', 'Введите валидный логин от аккаунта', 'username', 'Tulpar_Organization', '^[A-Za-z0-9_-]{3,31}$') }}
+
+							{{ input('Пароль', 'Введите пароль от вашего аккаунта', 'password', '*************', '[\S]{8,30}', type='password') }}
+
+							{{ end_form(terms=false) }}
+
+						</form>
+
+
+					{% else %}
+
+						<form name="organization-register" id="fiz_lico" action="{{ url_for('organization.register') }}" method="POST" class="login100-form validate-form">					
+
+							{{ input('Название организации', 'Введите официальное название', 'org_name', 'ТОО Тулпар', '^[A-Za-z0-9\u0400-\u04ff "-_:]{3,150}$') }}
+
+							{{ input('ФИО Владельца', 'Введите Ваш (руководителя) ФИО', 'owner_name', 'Омаров Омар Омарулы', '^[\u0400-\u04ff ]{3,150}$',) }}
+
+							{{ input('Мобильный номер руководителя', 'Введите 11-значный мобильный номер без +', 'owner_phone', '87784156868', '^[0-9]{11}$') }}
+
+							{{ input('Электронная почта руководителя', 'Введите электронную почту в формате: ex@abc.xyz', 'owner_email', 'ex@abc.xyz', '^[A-Za-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$') }}
+
+							{{ input('Контактный номер центра', 'Введите 11-значный мобильный номер без +', 'contact_phone', '87784156869', '^[0-9]{11}$') }}
+
+							{{ input('Контактная электронная почта', 'Введите электронную почту в формате: ex@abc.xyz', 'contact_email', 'ex@abc.xyz', '^[A-Za-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$') }}
+
+							{{ input('Адрес', 'Введите адрес волонтерского центра', 'addr', 'г.Кокшетау, Абая 97А', '^[A-Za-z0-9\u0400-\u04ff ,."-_:]{5,150}$') }}
+
+							{{ input('Информация', 'Напишите немного о своем волонтерском центре', 'about', 'Помогаем инвалидам, кормим бездомных кошек', '^[A-Za-z0-9\u0400-\u04ff ,."-_:]{5,150}$') }}
+
+							{{ input('Логин', 'Псевдоним должен содержать только цифры или латинские буквы от 3 до 31 символов', 'username', 'Tulpar_Organization', '^[A-Za-z0-9_-]{3,31}$') }}
+
+							{{ input('Пароль', 'Пароль должен содержать как минимум одну цифру, заглавную и строчную латинские буквы от 8 до 30 символов', 'password', '*************', '[\S]{8,30}', type='password') }}
+							
+							{{ input('Ключ регистрации', 'Ключ можно получить после личного собеседования с владельцом сайта', 'key', '***********************', '[\S]{44}') }}
+
+							{{ end_form() }}
+
+						</form>
+					
+					{% endif %}
+
+				{% else %}
+
+					{% if login is defined %}
+
+						<form name="volunteer-login" action="{{ url_for('volunteer.login') }}" method="POST" class="login100-form validate-form">
+
+							{{ input('Логин - Псевдоним', 'Введите валидный логин от аккаунта', 'username', 'Jeka228', '^[A-Za-z0-9_-]{3,31}$') }}
+
+							{{ input('Пароль', 'Введите пароль от аккаунта', 'password', '***********************', '[\S]{8,50}', type='password') }}
+
+							{{ end_form(terms=false) }}
+
+						</form>
+
+					{% else %}
+
+						<form name="volunteer-register" id="volunteer" action="{{ url_for('volunteer.register') }}" method="POST" class="login100-form validate-form">
+
+							{{ input('Имя', 'Введите свое имя', 'first_name', 'Омар', '^[\u0400-\u04ff]{3,100}$') }}
+
+							{{ input('Фамилия', 'Введите свою фамилию', 'last_name', 'Омаров', '^[\u0400-\u04ff]{3,100}$',) }}
+
+							{{ input('Отчество', 'Введите свое отчество', 'middle_name', 'Омарулы (Если нет оставьте "-")', '^[\u0400-\u04ff]{3,100}$') }}
+
+							{{ input('Дата рождения', 'Введите свою дату рождения', 'date_of_birth', '2004-02-04', type="date", id="date") }}
+
+							{{ input('Мобильный телефон', 'Введите 11-значный мобильный номер без +', 'phone_number', '87784156867', '^[0-9]{11}$') }}
+
+							{{ input('Электронная почта', 'Введите электронную почту в формате: ex@abc.xyz', 'email', 'ex@abc.xyz', '^[A-Za-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$') }}
+
+							{{ input('О себе', 'Напишите немного о своем волонтерском опыте', 'about', 'Кормлю бездомных кошек', '^[A-Za-z0-9\u0400-\u04ff ,."-_:]{5,150}$') }}
+
+							{{ input('Логин - Псевдоним', 'Псевдоним должен содержать только цифры или латинские буквы от 3 до 31 символов', 'username', 'Jeka228', '^[A-Za-z0-9_-]{3,31}$') }}
+
+							{{ input('Пароль', 'Пароль должен содержать как минимум одну цифру, заглавную и строчную латинские буквы от 8 до 30 символов', 'password', '*************', '[\S]{8,50}', type='password') }}
+						
+							{{ input('Волонтерский ключ', 'За ключом обратитесь к руководителя волонтерского центра', 'key', '***********************', '[\S]{44}') }}
+
+							{{ end_form() }}
+						
+						</form>
+
+					{% endif %}
+
+				{% endif %}
+
+			</div>
+		</div>
+	</div>
+
+	{% if org is undefined and not login %}
+
+		<script>
+			var today = new Date();
+			var dd = today.getDate();
+			var mm = today.getMonth()+1;
+			var yyyy = today.getFullYear() - 5;
+			if(dd<10){
+					dd='0'+dd
+				} 
+				if(mm<10){
+					mm='0'+mm
+				} 
+
+			today = yyyy+'-'+mm+'-'+dd;
+			document.getElementById("date").setAttribute("max", today);
+			document.getElementById("date").setAttribute("min", '1900-01-01');		
+		</script>
+
+	{% endif %}
+	
+	<script src="{{ url_for('static', filename='vendor/jquery/jquery-3.2.1.min.js') }}"></script>
+	
+	<script src="{{ url_for('static', filename='vendor/animsition/js/animsition.min.js') }}"></script>
+	
+	<script src="{{ url_for('static', filename='vendor/bootstrap/js/popper.js') }}"></script>
+
+	<script src="{{ url_for('static', filename='vendor/bootstrap/js/bootstrap.min.js') }}"></script>
+	
+	<script src="{{ url_for('static', filename='vendor/select2/select2.min.js') }}"></script>
+
+	<script src="{{ url_for('static', filename='vendor/daterangepicker/moment.min.js') }}"></script>
+
+	<script src="{{ url_for('static', filename='vendor/daterangepicker/daterangepicker.js') }}"></script>
+	
+	<script src="{{ url_for('static', filename='vendor/countdowntime/countdowntime.js') }}"></script>
+	
+	<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+	<!-- {% with messages = get_flashed_messages() %}
+	{% if messages %}
+		<script>
+		var messages = {{ messages | safe }};
+		for (var i=0; i<messages.length; i++) {
+			alert(messages[i]);
+		}
+		</script>
+	{% endif %}
+	{% endwith %} -->
+
+
+</body>
+</html>

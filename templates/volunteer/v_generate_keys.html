@@ -1,0 +1,53 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+    News Page
+{% endblock %}
+
+
+{% block content %}
+<div class="container z-depth-5 content #e0f7fa cyan lighten-4 content" style="border-radius: 23px;">
+    <div class="row">
+        <form class="col s10 offset-s1" action="{{ url_for('organization.generate_keys') }}" method="POST">
+
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+
+            <h3 class="special-heading">Выберите число волонтеров для регистрации</h3>
+            <br><br>
+            <p class="flow-text">Запршивать ключи можно 1 раз в день</p>
+            <p class="flow-text">Ключи придут на почту руководителя волонтерского центра, которую Вы указали в форме регистрации</p>
+            
+            <div class="">
+
+                {% macro input_number(n, checked=false) -%}
+
+                    <p>
+                        <label>
+                        <input name="keys_amount" type="radio" {% if checked %} checked {% endif %} value="{{ n }}" />
+                        <span>{{ n }}</span>
+                        </label>
+                    </p>
+
+                {%- endmacro %}
+            
+                {{ input_number(1, True) }}
+                {% for i in range(2, 6) %} 
+                    {{ input_number(i) }}
+                {% endfor %}
+                {{ input_number(10) }}
+                
+                <!-- {{ recaptcha }} -->
+
+                <br>
+                <button style="border-radius: 20px;" type="submit" class="btn btn-primary #00bcd4 cyan"><i class="material-icons left">send</i>отправить</button>
+                <br><br><br>
+
+            </div>
+
+        </form>
+    </div>
+</div>
+<br><br><br>
+{% endblock %}
+
+

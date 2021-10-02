@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+
+  {% macro head(url, label) -%}
+    <div class="left-align col round-border">
+      <a href="{{ url_for(url) }}" class="#039be5 light-blue darken-1 waves-effect waves-light btn z-depth-4">{{ label }}</a>
+    </div>
+  {%- endmacro %}
+
+  {% macro input(label, name, plc, pattern, title, required=true,  type='text', class='validate') -%}
+    <div class="col s12">
+      <p>{{ label }}</p>
+      <input name="{{ name }}" placeholder="{{ plc }}" pattern="{{ pattern }}" title="{{ title }}" type="{{ type }}" class="{{ class }}" value="{{ session.get(name, '') }}" {% if required %} required {% endif %} />
+    </div>
+  {%- endmacro %}
+
+  {% macro choose(label, value,  name, checked=false, type="checkbox", class='filled-in', required=false) -%}
+    <p>
+      <label>
+        <input value="{{ value }}" name="{{ name }}" class="{{ class }}" type="{{ type }}" title = "Please ffs select one of those" {% if value in session.get('help_type','') %} checked {% endif %} {% if checked %} checked {% endif %}   {% if required %} required {% endif %}/>
+        <span>{{ label }}</span>
+      </label>
+    </p>
+  {%- endmacro %}
+
+  {% macro heading(text) -%}
+    <div>
+      <br>
+      {% for sentence in text.split('.') %}
+        <h4 class="heading" align="center"> {{ sentence }}</h4>
+      {% endfor %}
+      <br>
+    </div>
+  {%- endmacro %}
+
+
+<head>
+    <meta charset="UTF-8">
+  
+    <title>
+        {% block title %}
+
+        {% endblock %} | Volus
+    </title>
+    
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@800&display=swap">
+
+    <link rel="stylesheet" href="{{url_for('static', filename='css/help.css')}}">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+    <style>
+      
+      body {
+       background-color: #E8F9FC;
+      }
+
+      .heading{
+        color:#69CFFF;
+      }
+
+      .alert {
+        padding: 20px;
+        background-color: #039be5;
+        color: white;
+      }
+      
+      .closebtn {
+        margin-left: 15px;
+        color: white;
+        font-weight: bold;
+        float: right;
+        font-size: 22px;
+        line-height: 20px;
+        cursor: pointer;
+        transition: 0.3s;
+      }
+      
+      .closebtn:hover {
+        color: black;
+      }
+
+      p {
+        text-indent: 20px; 
+       }
+
+    </style> 
+
+  </head>
+
+<body>
+ 
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      {% for category, message in messages %}
+        <!-- <div align="center" class="alert alert-{{ category }} alert-dismissible" role="alert">
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <strong >{{ message }}</strong> 
+        </div> -->
+        <div class="alert">
+          <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
+          <strong>Внимание: </strong>{{ message }}
+        </div>
+        
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+
+    <div class="#81d4fa light-blue lighten-3 row s12">
+
+      {{ head('help.profile', session.get('name', 'профиль')) }}
+
+      {{ head('help.get_help', 'помощь') }}
+
+      {{ head('help.history', 'история') }}
+
+      {# {{ head('help.notifications', 'уведомления') }} #}
+
+      <a href="{{ url_for('help.logout') }}" class="btn-flat">Выйти</a>
+
+      <div>
+        &nbsp;
+      </div>
+
+    </div>
+
+    
+    <div>
+      &nbsp;
+    </div>
+
+  <div class="container z-depth-5 #fafafa grey lighten-5 left-align round-border">
+    {% block content %}  
+
+    {% endblock %}
+  </div>
+
+  
+  <div>
+    &nbsp;
+  </div>
+  
+  <div>
+    &nbsp;
+  </div>
+  
+  <div>
+    &nbsp;
+  </div>
+
+  <footer class="page-footer #81d4fa light-blue lighten-3">
+    <div class="container">
+      <div class="row">
+        <div class="col l6 s12">
+          <h5 class="white-text">Volus 2021</h5>
+          <p class="grey-text text-lighten-4" style="text-align:justify">Данный сайт предназначен для быстрого получения помощи. 
+            Если Вы обращались в волонтерские центры до этого. 
+            То сделайте это проще теперь с помощью данного веб-сайта</p>
+          <p class="grey-text text-lighten-4">Мы не распространяем личные данные о Вас</p>
+        </div>
+        <div class="col l4 offset-l2 s12">
+          <h5 class="white-text">Социальные сети</h5>
+          <ul>
+            <li><a class="grey-text text-lighten-3" href="https://www.instagram.com/volunteer_us/">Instagram</a></li>
+            <li><a class="grey-text text-lighten-3" href="https://www.facebook.com/volunteer.us.710">Facebook</a></li>
+            <!-- <li><a class="grey-text text-lighten-3" href="https://github.com/Madi-S">Github</a></li>
+            <li><a class="grey-text text-lighten-3" href="https://github.com/Madi-S">Github</a></li> -->
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="footer-copyright">
+      <div class="container">
+      © 2021 Copyright Все права защищены
+      </div>
+    </div>
+  </footer>
+
+</body>
+
+</html>

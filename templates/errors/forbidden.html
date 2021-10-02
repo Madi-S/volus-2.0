@@ -1,0 +1,11 @@
+{% extends 'errors/error_base.html' %}
+
+
+{% block title %}
+    Forbidden 403
+{% endblock %}
+
+
+{% block msg %}
+    У вас нет прав на посещение данной страницы! {{ error }}
+{% endblock %}
