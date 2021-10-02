@@ -1,4 +1,4 @@
-from flask import Blueprint, Response, request, url_for, redirect, render_template, session, flash
+from flask import Blueprint, request, url_for, redirect, render_template, session, flash
 
 from views import wraps, log_view, logger
 from models import Needy, HelpQuery

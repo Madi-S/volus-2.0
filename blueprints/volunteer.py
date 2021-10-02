@@ -1,6 +1,6 @@
 from flask import Blueprint, request, url_for, redirect, render_template, session, flash
 
-from models import Volunteer, Organization, HelpQuery, Notification, Bookmark, QueryCompletion, Needy
+from models import Volunteer, Organization, HelpQuery, Notification, Bookmark, QueryCompletion
 from validators import Validator
 
 from views import log_view, wraps, logger, recaptcha

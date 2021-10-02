@@ -1,19 +1,8 @@
 import re
-import requests
-from bs4 import BeautifulSoup
 from string import digits, punctuation
 
 
-user_agents_url = 'http://www.useragentstring.com/pages/useragentstring.php'
-
-
 def get_bad_user_agents():
-    # r = requests.get(user_agents_url)
-    # if r.ok:
-    #     soup = BeautifulSoup(r.text, 'html.parser')
-    #     user_agents = [a.text for a in soup.find_all('a', class_='unterMenuName')]
-    #     return user_agents
-
     return []
 
 
