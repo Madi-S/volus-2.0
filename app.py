@@ -9,7 +9,6 @@ from flask_wtf.csrf import CSRFProtect
 from flask_sqlalchemy import SQLAlchemy
 
 from config import Config
-from views import *
 
 
 app = Flask('Volus')
@@ -28,6 +27,7 @@ admin = Admin(app, name='Volus Админка',
 
 
 def create_app():
+    from views import AdminModelView
     import models
 
     admin.add_view(AdminModelView(models.Needy, db.session,
