@@ -15,7 +15,7 @@ db.create_all()
 ### To run:
 
 1. Optionally run filler.py to fill the website with sample data
-2. `python run.py`
+2. `python run.py` OR `gunicorn -w 4 wsgi:app`
 
 
 ### To view logs:
