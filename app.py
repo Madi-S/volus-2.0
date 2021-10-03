@@ -24,3 +24,32 @@ ip_ban = IpBan(app, ban_seconds=60, ban_count=30)
 # ip_ban.ip_whitelist_add('127.0.0.1')
 admin = Admin(app, name='Volus Админка',
               template_mode='bootstrap3', url='/admin-volus-for-madi')
+
+
+import models
+from views import *
+from blueprints.help import help as help_blueprint
+from blueprints.volunteer import volunteer as volunteer_blueprint
+from blueprints.organization import organization as organization_blueprint
+
+
+app.register_blueprint(help_blueprint, url_prefix='/help')
+app.register_blueprint(volunteer_blueprint, url_prefix='/volunteer')
+app.register_blueprint(organization_blueprint, url_prefix='/organization')
+
+admin.add_view(AdminModelView(models.Needy, db.session,
+                              'Нуждающиеся', endpoint='/admin-needies'))
+admin.add_view(AdminModelView(models.Bookmark, db.session,
+                              'Закладки', endpoint='/admin-bookmarks'))
+admin.add_view(AdminModelView(models.HelpQuery, db.session,
+                              'Запросы', endpoint='/admin-help-queries'))
+admin.add_view(AdminModelView(models.Volunteer, db.session,
+                              'Волонтеры', endpoint='/admin-volunteers'))
+admin.add_view(AdminModelView(models.Organization, db.session,
+                              'Организации', endpoint='/admin-organizations'))
+admin.add_view(AdminModelView(models.Notification, db.session,
+                              'Уведомления', endpoint='/admin-notifications'))
+admin.add_view(AdminModelView(models.VolunteerRegistrationKey, db.session,
+                              'Ключи Регистрации Волонтеров', endpoint='/admin-volunteer-registration-keys'))
+admin.add_view(AdminModelView(models.OrganizationRegistrationKey, db.session,
+                              'Ключи Регистрации Организаций', endpoint='/admin-organization-registration-keys'))
