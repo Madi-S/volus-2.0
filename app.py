@@ -54,3 +54,4 @@ def create_app():
     app.register_blueprint(help_blueprint, url_prefix='/help')
     app.register_blueprint(volunteer_blueprint, url_prefix='/volunteer')
     app.register_blueprint(organization_blueprint, url_prefix='/organization')
+    return app
