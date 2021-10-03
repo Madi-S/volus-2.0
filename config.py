@@ -37,8 +37,8 @@ class Config(object):
     MAIL_DEBUG = False
     MAIL_USE_SSL = True
     MAIL_SERVER = 'smtp.gmail.com'
-    MAIL_USERNAME = os.environ['SMTP_EMAIL'] or 'volus.kokshe@gmail.com'
-    MAIL_PASSWORD = os.environ['SMTP_PASSWORD'] or 'volus=zaebis123Q#*@#'
+    MAIL_USERNAME = 'volus.kokshe@gmail.com'
+    MAIL_PASSWORD = 'volus=zaebis123Q#*@#'
 
     # --- ADMIN ---
     FLASK_ADMIN_SWATCH = 'superhero'
