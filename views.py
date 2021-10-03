@@ -3,7 +3,8 @@ from flask_admin.contrib.sqla import ModelView
 from flask_wtf.csrf import CSRFError
 from flask_mail import Message
 
-from app import app, ip_ban, recaptcha, mail, db, models
+from app import app, ip_ban, recaptcha, mail, db
+from models import Needy, Volunteer, Organization, AdminUser
 
 from functools import wraps
 from logger import logger
@@ -121,7 +122,7 @@ def admin_login():
             username = request.form.get('username')
             password = request.form.get('password')
 
-            validated = models.AdminUser.validate_creds(username, password)
+            validated = AdminUser.validate_creds(username, password)
 
             if validated:
                 session['admin_madi'] = True
@@ -150,7 +151,7 @@ def favicon():
 @log_view
 def donate():
     # TODO: do not load all organizations, find out way to paginate them
-    # orgs = models.Organization.query.all()
+    # orgs = Organization.query.all()
     # return render_template('home/donations.html', orgs=orgs)
     flash('Данная страница в процессе разработке')
     return redirect(url_for('home'))
@@ -168,7 +169,7 @@ def terms():
 @log_view
 def home():
     iin = session.get('iin')
-    if iin and models.Needy.query.filter_by(iin=iin).first():
+    if iin and Needy.query.filter_by(iin=iin).first():
         return redirect(url_for('help.home'))
     
     return render_template('home/index.html')
