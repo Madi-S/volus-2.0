@@ -16,3 +16,8 @@ db.create_all()
 
 1. Optionally run filler.py to fill the website with sample data
 2. `python run.py`
+
+
+### To view logs:
+
+1. `heroku logs --tail --app=volus`

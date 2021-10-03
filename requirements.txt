@@ -109,3 +109,4 @@ wtforms==2.3.3
     # via
     #   flask-admin
     #   flask-wtf
+gunicorn==20.1.0
