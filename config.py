@@ -1,7 +1,9 @@
+import os
 from datetime import timedelta
 from sys import platform
-from os import environ
 
+
+DB_ABS_PATH = os.path.join(os.path.abspath(os.getcwd()), 'sqlite', 'volus.db')
 
 class Config(object):
     DEBUG = True
@@ -12,7 +14,7 @@ class Config(object):
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     if platform.startswith('w'):
         # For Windows
-        SQLALCHEMY_DATABASE_URI = r'sqlite:///C:\Users\khova\Desktop\Python\Code\Volus-1\app\sqlite\volus.db'
+        SQLALCHEMY_DATABASE_URI = f'sqlite:///{DB_ABS_PATH}'
 
     else:
         # For Ubuntu
@@ -35,8 +37,8 @@ class Config(object):
     MAIL_DEBUG = False
     MAIL_USE_SSL = True
     MAIL_SERVER = 'smtp.gmail.com'
-    MAIL_USERNAME = environ['SMTP_EMAIL']
-    MAIL_PASSWORD = environ['SMTP_PASSWORD']
+    MAIL_USERNAME = os.environ['SMTP_EMAIL'] or 'volus.kokshe@gmail.com'
+    MAIL_PASSWORD = os.environ['SMTP_PASSWORD'] or 'volus=zaebis123Q#*@#'
 
     # --- ADMIN ---
     FLASK_ADMIN_SWATCH = 'superhero'
@@ -50,5 +52,3 @@ class Config(object):
 
     # --- TESTING ---
     APP_BASE_URL = 'http://127.0.0.1:5000/'
-    CHROMEDRIVER_PATH = './chromedriver.exe'
-    GECKODRIVER_PATH = './geckodriver.exe'

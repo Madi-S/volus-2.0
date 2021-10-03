@@ -346,7 +346,7 @@ class Organization(SecretUserMixin, UpdateUserMixin, db.Model):
             str: Returns well-formated string of registration keys for volunteers
         '''
         logger.debug(
-            'Generating %s volunteer registration keys for %s', org_key, n)
+            'Generating %s volunteer registration keys for %s', n, org_key)
 
         if org_key:
             org = Organization.query.filter_by(key=org_key).first()
