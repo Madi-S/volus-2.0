@@ -1,11 +1,12 @@
 from flask import Blueprint, request, url_for, redirect, render_template, session, flash
+from flask_mail import Message
+from threading import Thread
 
-from app import Message, mail, recaptcha, app
 from views import log_view, wraps, logger
+from app import mail, recaptcha, app
 from validators import Validator
 from models import Organization
 
-from threading import Thread
 
 
 validator = Validator()

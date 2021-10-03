@@ -1,10 +1,9 @@
 from flask import Blueprint, request, url_for, redirect, render_template, session, flash
+from datetime import date
 
 from models import Volunteer, Organization, HelpQuery, Notification, Bookmark, QueryCompletion
-from validators import Validator
-
 from views import log_view, wraps, logger, recaptcha
-from datetime import date
+from validators import Validator
 
 
 validator = Validator()
@@ -13,7 +12,7 @@ volunteer = Blueprint('volunteer', __name__, static_folder='../static',
                       template_folder='../templates/volunteer')
 
 
-# strftime('%d.%m.%y %H:%m:%S')
+# Datetime format: strftime('%d.%m.%y %H:%m:%S')
 
 
 def login_required(f):
@@ -25,7 +24,9 @@ def login_required(f):
         logger.debug('In login_required Vol: %s and Org: %s', vol, org)
 
         if vol and org:
-            session.debug('Both volunteer and organization session items are present. Redirecting to register page')
+            logger.debug('Both volunteer and organization session items are present. Clearing session items. Redirecting to register page')
+            session.pop('vol', None)
+            session.pop('org', None)
             return redirect(url_for('volunteer.register'))
 
         if (vol or org) and (Volunteer.query.filter_by(key=vol.get('key')).first() or Organization.query.filter_by(key=org.get('key')).first()):

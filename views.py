@@ -1,8 +1,9 @@
-from flask import render_template, request, url_for, redirect, session, Response, flash, send_from_directory, send_file
-from app import app, ip_ban, recaptcha, Message, mail, db
+from flask import render_template, request, url_for, redirect, session, flash, send_from_directory
 from flask_admin.contrib.sqla import ModelView
 from flask_wtf.csrf import CSRFError
+from flask_mail import Message
 
+from app import app, ip_ban, recaptcha, mail, db
 from models import AdminUser, Organization, Needy
 
 from functools import wraps

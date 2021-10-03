@@ -48,7 +48,7 @@
             <td>{{ q.start_date.strftime('%d.%m.%y %H:%m') }} </td>
             <td>{{ q.minutes }} </td>
             <td>{{ q.about }} </td>
-            <td>{{ q.accepted }} </td>
+            <td>{% if q.accepted %} Да {% else %} Нет {% endif %}</td>
             <td>{{ q.completion_date.strftime('%d.%m.%y %H:%m') }} </td>
           </tr>
         {% endfor %}
