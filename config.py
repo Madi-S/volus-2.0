@@ -12,13 +12,13 @@ class Config(object):
 
     # --- DATABASE ---
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    if platform.startswith('w'):
-        # For Windows
-        SQLALCHEMY_DATABASE_URI = f'sqlite:///{DB_ABS_PATH}'
+    # if platform.startswith('w'):
+    # For Windows
+    SQLALCHEMY_DATABASE_URI = f'sqlite:///{DB_ABS_PATH}'
 
-    else:
-        # For Ubuntu
-        SQLALCHEMY_DATABASE_URI = 'mysql+mysqlconnector://root:1234@localhost/volus'
+    # else:
+    #     # For Ubuntu
+    #     SQLALCHEMY_DATABASE_URI = 'mysql+mysqlconnector://root:1234@localhost/volus'
 
     # --- SESSION ---
     SESSION_TYPE = 'redis'
