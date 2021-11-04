@@ -6,7 +6,6 @@ from models import Needy, HelpQuery
 from validators import Validator
 
 
-
 validator = Validator()
 
 help = Blueprint('help', __name__, static_folder='../static',

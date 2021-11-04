@@ -24,7 +24,8 @@ def login_required(f):
         logger.debug('In login_required Vol: %s and Org: %s', vol, org)
 
         if vol and org:
-            logger.debug('Both volunteer and organization session items are present. Clearing session items. Redirecting to register page')
+            logger.debug(
+                'Both volunteer and organization session items are present. Clearing session items. Redirecting to register page')
             session.pop('vol', None)
             session.pop('org', None)
             return redirect(url_for('volunteer.register'))
@@ -195,11 +196,11 @@ def complete(notification_id):
             vol_id = notification.from_volunteer or notification.to_volunteer
             vol = Volunteer.query.get(vol_id)
             hq = HelpQuery.query.get(notification.help_query_id)
-            
+
             data = {}
 
             data['notification_id'] = notification_id
-            
+
             data['vol_id'] = vol.id
             data['vol_name'] = vol.last_name + ' ' + vol.first_name
 
@@ -243,7 +244,7 @@ def complete(notification_id):
                 qc.accept()
             else:
                 flash('Произошла ошибка, повторите позже')
-                
+
         else:
             QueryCompletion.create_or_update(
                 notification_id,

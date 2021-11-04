@@ -171,7 +171,7 @@ def home():
     iin = session.get('iin')
     if iin and Needy.query.filter_by(iin=iin).first():
         return redirect(url_for('help.home'))
-    
+
     return render_template('home/index.html')
 
 

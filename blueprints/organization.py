@@ -8,7 +8,6 @@ from validators import Validator
 from models import Organization
 
 
-
 validator = Validator()
 
 organization = Blueprint('organization', __name__,

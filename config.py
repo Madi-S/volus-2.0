@@ -5,6 +5,7 @@ from sys import platform
 
 DB_ABS_PATH = os.path.join(os.path.abspath(os.getcwd()), 'sqlite', 'volus.db')
 
+
 class Config(object):
     DEBUG = True
 
