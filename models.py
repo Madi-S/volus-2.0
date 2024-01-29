@@ -1,7 +1,8 @@
-from logger import logger
-from app import db, bcrypt
 from datetime import datetime
 from crypto import generate_key, generate_slug
+
+from logger import logger
+from app import db, bcrypt
 
 
 class AdminUser(db.Model):

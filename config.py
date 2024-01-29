@@ -1,6 +1,6 @@
 import os
-from datetime import timedelta
 from sys import platform
+from datetime import timedelta
 
 
 DB_ABS_PATH = os.path.join(os.path.abspath(os.getcwd()), 'sqlite', 'volus.db')
@@ -12,23 +12,17 @@ class Config(object):
     # FLASK_ENV = 'development'
 
     # --- DATABASE ---
-    SQLALCHEMY_TRACK_MODIFICATIONS = False
-    # if platform.startswith('w'):
-    # For Windows
-    SQLALCHEMY_DATABASE_URI = f'sqlite:///{DB_ABS_PATH}'
-
-    # else:
-    #     # For Ubuntu
-    #     SQLALCHEMY_DATABASE_URI = 'mysql+mysqlconnector://root:1234@localhost/volus'
+    SQLALCHEMY_DATABASE_URI = f'sqlite:///{DB_ABS_PATH}' if platform.startswith('w')\
+                            else 'mysql+mysqlconnector://root:1234@localhost/volus'
 
     # --- SESSION ---
     SESSION_TYPE = 'redis'
-    SECRET_KEY = '6LfwKVwaAAAAAH_X6LfwKVwaAAAAAC5vUdbssnDBUOJOytC2VBYYIbUUxY3Z17GUvOWO9niVh6LfwKVwaAAAAAH_XIbUUxY3Z17GUvOWO9niVhQZmQZm6LfwKVwaAAAAAC5vUdbssnDBUOJOytC2VBYY'
+    SECRET_KEY = 'Your app secret key'
     PERMANENT_SESSION_LIFETIME = timedelta(days=3650)
 
     # --- RECAPTCHA ---
-    RECAPTCHA_SITE_KEY = '6LfwKVwaAAAAAH_XIbUUxY3Z17GUvOWO9niVhQZm'
-    RECAPTCHA_SECRET_KEY = '6LfwKVwaAAAAAC5vUdbssnDBUOJOytC2VBYY-TLl'
+    RECAPTCHA_SITE_KEY = 'Recaptcha site key'
+    RECAPTCHA_SECRET_KEY = 'Reacaptcha secret key'
     # RECAPTCHA_THEME = 'dark'
     # RECAPTCHA_TYPE = 'audio'
     # RECAPTCHA_SIZE = 'compact'

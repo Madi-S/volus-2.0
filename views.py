@@ -1,16 +1,15 @@
-from flask import render_template, request, url_for, redirect, session, flash, send_from_directory
-from flask_admin.contrib.sqla import ModelView
-from flask_wtf.csrf import CSRFError
 from flask_mail import Message
+from flask_wtf.csrf import CSRFError
+from flask_admin.contrib.sqla import ModelView
+from flask import render_template, request, url_for, redirect, session, flash, send_from_directory
+
+import os
+from time import time
+from logger import logger
+from functools import wraps
 
 from app import app, ip_ban, recaptcha, mail, db
 from models import Needy, Volunteer, Organization, AdminUser
-
-from functools import wraps
-from logger import logger
-from time import time
-
-import os
 
 
 bad_user_agents = ('requests', 'scrap', 'crawl', 'spider')

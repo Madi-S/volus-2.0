@@ -1,12 +1,11 @@
-import argparse
 import sys
-
-from models import db, Volunteer, Organization, Needy, HelpQuery, VolunteerRegistrationKey, OrganizationRegistrationKey
-from crypto import generate_key
-
-from random import choice, randint
-from datetime import timedelta
+import argparse
 from faker import Faker
+from datetime import timedelta
+from random import choice, randint
+
+from crypto import generate_key
+from models import db, Volunteer, Organization, Needy, HelpQuery, VolunteerRegistrationKey, OrganizationRegistrationKey
 
 
 parser = argparse.ArgumentParser(
